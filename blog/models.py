@@ -13,8 +13,8 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts", verbose_name="Автор")
     body = models.TextField(verbose_name="Содержание")
     publish = models.DateTimeField(default=timezone.now, verbose_name="Дата и время публикации статьи")
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время создания статьи")
+    updated = models.DateTimeField(auto_now=True, verbose_name="Дата и время обновления статьи")
     status = models.CharField(max_length=16, choices=STATUS_CHOICES, default="draft", verbose_name="Статус публикации")
 
     class Meta:
