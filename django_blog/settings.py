@@ -81,3 +81,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = "/static/"
+
+EMAIL_HOST_USER = "blog@blog.com"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
