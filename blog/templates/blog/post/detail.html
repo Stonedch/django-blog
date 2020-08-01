@@ -6,6 +6,9 @@
 
     <h1> {{ post.title }} </h1>
     <p> Published {{ post.publish }} by {{ post.author }} </p>
+        {% if post.tags.all %}
+            <p> Tags: {{ post.tags.all|join:", " }} </p>
+        {% endif %}
     <p> {{ post.body|linebreaks }} </p>
     <p> <a href="{% url 'blog:post_share' post.id %}"> Share this post </a> </p>
 

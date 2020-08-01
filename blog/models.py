@@ -3,6 +3,8 @@ from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+from taggit.managers import TaggableManager
+
 
 class PublishedManager(models.Manager):
     def get_queryset(self):
@@ -17,6 +19,7 @@ class Post(models.Model):
     title = models.CharField(max_length=256, verbose_name="Загаловок")
     slug = models.SlugField(max_length=256, unique_for_date="publish", verbose_name="Семантический URL")
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="posts", verbose_name="Автор")
+    tags = TaggableManager()
     body = models.TextField(verbose_name="Содержание")
     publish = models.DateTimeField(default=timezone.now, verbose_name="Дата и время публикации статьи")
     created = models.DateTimeField(auto_now_add=True, verbose_name="Дата и время создания статьи")
