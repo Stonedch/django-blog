@@ -9,4 +9,29 @@
     <p> {{ post.body|linebreaks }} </p>
     <p> <a href="{% url 'blog:post_share' post.id %}"> Share this post </a> </p>
 
+    {% with comments.count as total_comments %}
+        {% if total_comments <= 1 and total_comments != 0 %}
+            <h2> {{ total_comments }} комментарий </h2>
+        {% elif total_comments <= 4 and total_comments != 0 %}
+            <h2> {{ total_comments }} комментария </h2>
+        {% else %}
+            <h2> {{ total_comments }} комментариев </h2>
+        {% endif %}
+    {% endwith %}
+
+    {% for comment in comments %}
+        <p> [{{ forloop.counter }}] [{{ comment.created }}] {{ comment.name }}: {{ comment.body }} </p>
+    {% endfor %}
+
+    {% if new_comment %}
+        <h2> Your comment has been added. </h2>
+    {% else %}
+        <h2> Add a new comment </h2>
+        <form action="." method="POST">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <p><input type="submit" value="Add comment"></p>
+        </form>
+    {% endif %}
+
 {% endblock %}
