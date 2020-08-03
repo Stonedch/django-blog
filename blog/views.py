@@ -9,12 +9,22 @@ from django.views import generic
 from django.shortcuts import render, redirect, reverse
 from django.shortcuts import get_object_or_404
 
+from taggit.models import Tag
 
-class PostListView(generic.ListView):
-    queryset = models.Post.published.all()
-    context_object_name = "posts"
-    paginate_by = 2
-    template_name = "blog/post/list.html"
+
+class PostListView(generic.View):
+    def get(self, request, tag_slug=None):
+        page_number = request.GET.get("page", 1)
+        posts = models.Post.published.all()
+
+        paginator = Paginator(posts, 3)
+        page = paginator.get_page(page_number)
+
+        context = {
+            "page": page,
+        }
+
+        return render(request, "blog/post/list.html", context)
 
 
 def post_detail(request, year, month, day, post):
