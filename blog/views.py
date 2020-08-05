@@ -15,9 +15,13 @@ from taggit.models import Tag
 class PostListView(generic.View):
     def get(self, request, tag_slug=None):
         page_number = request.GET.get("page", 1)
-        posts = models.Post.published.all()
+        object_list = models.Post.published.all()
 
-        paginator = Paginator(posts, 3)
+        if tag_slug:
+            tag = get_object_or_404(Tag, slug=tag_slug)
+            object_list = object_list.filter(tags__in=[tag])
+
+        paginator = Paginator(object_list, 3)
         page = paginator.get_page(page_number)
 
         context = {
