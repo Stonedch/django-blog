@@ -20,5 +20,3 @@ RUN apk update \
 
 # Install dependencies
 RUN pip install -r requirements.txt
-
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
