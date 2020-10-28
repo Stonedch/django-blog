@@ -1,11 +1,28 @@
-version: "3"
+version: "3.8"
 
 services:
 
-    web:
-        build: ./
-        command: python manage.py runserver 0.0.0.0:8000
+    webserver:
+        build:
+            context: ${APP_ROOT}
+            dockerfile: Dockerfile
+        container_name: ${PROJECT_NAME}-webserver
+        command: python manage.py runserver 0.0.0.0:80
         volumes:
-            - ./:/data/
+            - ${APP_ROOT}:/usr/src/app/
         ports:
-            - 8000:8000
+            - ${HOST_PORT}:80
+        env_file:
+            - ./.env
+        depends_on:
+            - database
+
+    database:
+        image: postgres:13-alpine
+        container_name: ${PROJECT_NAME}-database
+        volumes:
+            - ${DATABASE_ROOT}/data:/var/lib/postgresql/data/
+        environment:
+            - POSTGRES_USER=${SQL_USER}
+            - POSTGRES_PASSWORD=${SQL_PASSWORD}
+            - POSTGRES_DB=${SQL_DATABASE}

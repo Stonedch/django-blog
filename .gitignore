@@ -1,6 +1,10 @@
 .vscode
+**/.venv/
+.env
 
 **/migrations/*
 !**/migrations/__init__.py
 **/__pycache__/*
-db.sqlite3
+
+postgresql/
+**/db.sqlite3

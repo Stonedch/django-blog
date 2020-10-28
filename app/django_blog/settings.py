@@ -2,11 +2,11 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-SECRET_KEY = "gi3wdprv4!$kqzt2o_2ual=@d7-o%vt2cx-^*g#6hzn2c==g47"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", 0)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 INSTALLED_APPS = [
     "django.contrib.admin",
@@ -51,8 +51,12 @@ WSGI_APPLICATION = "django_blog.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "USER": os.environ.get("SQL_USER", "user"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
 
@@ -71,9 +75,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LANGUAGE_CODE = "ru"
+LANGUAGE_CODE = os.environ.get("DJANGO_LANGUAGE_CODE", "en")
 
-TIME_ZONE = "Europe/Moscow"
+TIME_ZONE = os.environ.get("DJANGO_TIME_ZONE", "UTC")
 
 USE_I18N = True
 
